@@ -1,0 +1,45 @@
+{% if node_names -%}
+// ---------------------------------------------------------------------------
+// Node name constants
+// ---------------------------------------------------------------------------
+
+{% if super_node_names -%}
+{% for name in super_node_names -%}
+/// This constant holds the string name of the grammar *super-type* node `{{ name }}`.
+pub const SUPER_NODE_TYPE_{{ name | upper }}: &str = "{{ name }}";
+
+{% endfor %}
+{%- endif %}
+{%- for name in node_names -%}
+/// This constant holds the string name of the grammar node `{{ name }}`.
+pub const NODE_TYPE_{{ name | upper }}: &str = "{{ name }}";
+
+{% endfor %}
+{%- endif %}
+
+{% if field_names -%}
+// ---------------------------------------------------------------------------
+// Field name constants
+// ---------------------------------------------------------------------------
+
+{% for name in field_names -%}
+/// This constant holds the string name of the grammar field `{{ name }}`.
+pub const FIELD_{{ name | upper }}: &str = "{{ name }}";
+
+{% endfor %}
+{%- endif %}
+
+{% if terminal_names -%}
+// ---------------------------------------------------------------------------
+// Terminal Tokens
+// ---------------------------------------------------------------------------
+
+/// This array contains all non-named rules in the grammar.
+/// These are typically terminal tokens such as reserved names, built-in
+/// types, values, and punctuation strings.
+pub const OTHER_TOKENS: [&str; 176] = [
+{%- for name in terminal_names %}
+    "{{ name }}",
+{%- endfor %}
+];
+{% endif %}

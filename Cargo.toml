@@ -1,0 +1,71 @@
+[package]
+authors = ["Simon Johnston <johnstonskj@gmail.com>"]
+name = "cargo_tsgen"
+version = "0.1.0"
+description = """Additional code generation tools for tree-sitter"""
+documentation = "https://docs.rs/cargo_tsgen/"
+repository = "https://github.com/johnstonskj/rust-cargo-tsgen.git"
+license = "MIT/Apache-2.0"
+readme = "README.md"
+edition = "2024"
+publish = true
+
+exclude = ["/bindings", "**/*~", "**/#*#"]
+
+[package.metadata.docs.rs]
+# This sets the default target to `x86_64-unknown-linux-gnu`
+# and only builds that target for documentation.
+targets = ["x86_64-unknown-linux-gnu"]
+
+[features]
+cli = [
+    "dep:clap",
+    "dep:clap_complete_command",
+    "dep:clap_derive",
+    "dep:clap_mangen",
+    "dep:clap-markdown",
+    "dep:clap-verbosity-flag",
+    "dep:tracing",
+    "dep:tracing-subscriber"
+]
+
+[dependencies]
+clap = { version = "4.5", optional = true }
+clap-markdown = { version = "0.1", optional = true }
+clap-verbosity-flag = { version = "3.0", features = ["tracing"], optional = true }
+clap_complete_command = { version = "0.6", optional = true }
+clap_derive = { version = "4.5", optional = true }
+clap_mangen = { version = "0.2", optional = true }
+flat_error = "0.1.0"
+human-panic = "2.0.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+structopt = { version = "0.3", optional = true }
+tera = "1.20.0"
+tracing = { version = "0.1", optional = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter", "std"], optional = true }
+
+[[bin]]
+name = "cargo-tsgen"
+path = "src/bin/main.rs"
+required-features = ["cli"]
+
+[dev-dependencies]
+pretty_assertions = "1.4.1"
+
+# Uncomment for the #[serial] and #[parallel] marker attributes to add to
+# tests to manage concurrency where required.
+# serial_test = "3.2.0"
+
+# Uncomment for a replacement of the #[test] attribute that initializes 
+# logging and/or tracing infrastructure before running tests.
+# test-log = "0.2.18"
+
+# Uncomment for additional assertion macros for testing. For example,
+# assert_ge, assert_ok, assert_some, assert_pending, etc.
+# claims = "0.8.0"
+
+# The profile that 'cargo dist' will build with
+[profile.dist]
+inherits = "release"
+lto = "thin"
