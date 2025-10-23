@@ -39,7 +39,7 @@ clap-verbosity-flag = { version = "3.0", features = ["tracing"], optional = true
 clap_complete_command = { version = "0.6", optional = true }
 clap_derive = { version = "4.5", optional = true }
 clap_mangen = { version = "0.2", optional = true }
-flat_error = "0.1"
+flat_error = "0.2"
 human-panic = "2.0"
 newstr = "0.3"
 pastey = "0.1"
