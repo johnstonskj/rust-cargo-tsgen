@@ -17,16 +17,45 @@ Add a longer description here.
 
 TBD
 
-```rust
+```bash
+ ❱ cargo tsgen --help
+his command can generate additional, type-safe, features for tree-sitter bindings.
+
+Usage: cargo-tsgen [OPTIONS] <COMMAND>
+
+Commands:
+  constants    Create a constants file from node-types.json
+  wrapper      Create a type-safe wrapper around the tree-sitter CST using grammar.json
+  completions  Generate shell completions
+  help         Print this message or the help of the given subcommand(s)
+
+Options:
+  -v, --verbose...
+          Increase logging verbosity
+
+  -q, --quiet...
+          Decrease logging verbosity
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
 ```
+
+- **constants**; this reads the tree-sitter generated file `src/node-types.json` and writes out a
+  language-specific file containing constants for all node and field names.
+- **wrapper**; this reads the tree-sitter generated file `src/grammar.json` and writes out a
+  language-specific file containing `Node` wrappers for the grammar.
+- **completions**; write out shell completions for the tool itself.
 
 ## Features
 
-| Name               | Dependencies                   | Description                                                            |
-+--------------------+--------------------------------+------------------------------------------------------------------------+
-| *default*          | std, tracing, values-timestamp | Package default features.                                              |
-| std                | alloc                          | Enables the `std` library crate, the most common default.              |
-| alloc              |                                | Enables the `alloc` library crate, required in a `no_std` environment. |
+| Name      | Dependencies | Description                                                            |
+|-----------|--------------|------------------------------------------------------------------------|
+| *default* | std,         | Package default features.                                              |
+| std       | alloc        | Enables the `std` library crate, the most common default.              |
+| alloc     |              | Enables the `alloc` library crate, required in a `no_std` environment. |
 
 ## License(s)
 
@@ -78,7 +107,7 @@ See the enclosed file [LICENSE-Apache](https://github.com/johnstonskj/rust-cargo
 
 See the enclosed file [LICENSE-MIT](https://github.com/johnstonskj/rust-cargo-tsgen/blob/main/LICENSE-MIT).
 
-### Contributions
+## Contributions
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you, as defined in the Apache-2.0 license, shall

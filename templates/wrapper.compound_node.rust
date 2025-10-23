@@ -1,0 +1,19 @@
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct {{ name }}<'t, 's> {
+    node: Node<'t>,
+    source: &'s [u8],
+}
+
+impl<'t, 's> TypedNode<'t, 's> for {{ name }}<'t, 's> {
+    fn from_node(node: Node<'t>, source: &'s [u8]) -> Self {
+        Self { node, source }
+    }
+}
+
+impl<'s> {{ name }}<'s> {
+    {% for method in methods -%}
+{{field}}
+
+    {% endfor %}
+}

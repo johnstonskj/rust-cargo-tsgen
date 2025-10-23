@@ -62,4 +62,5 @@ pub mod reader;
 pub mod writer;
 
 #[cfg(feature = "cli")]
+#[doc(hidden)]
 pub mod cli;

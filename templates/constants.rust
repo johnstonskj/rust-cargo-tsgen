@@ -1,3 +1,9 @@
+/*!
+This file contains all the node type names, node field names, and terminals,
+for the current grammar.
+
+ */
+
 {% if node_names -%}
 // ---------------------------------------------------------------------------
 // Node name constants

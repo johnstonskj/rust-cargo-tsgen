@@ -1,0 +1,9 @@
+
+root_node!({{ name }});
+
+impl<'s> {{ name }}<'s> {
+    {% for method in methods %}
+        {{field}}
+
+    {% endfor %}
+}

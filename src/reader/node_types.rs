@@ -1,12 +1,6 @@
 /*!
 One-line description.
 
-More detailed description, with
-
-# Example
-
-End of file during parsingSymbol’s value as variable is void: rustEnd of file during parsing
-
  */
 
 use crate::{error::Error, reader::InputFile};
@@ -17,7 +11,7 @@ use std::{
     io::BufReader,
     path::Path,
 };
-use tracing::error;
+use tracing::{error, trace};
 
 // ------------------------------------------------------------------------------------------------
 // Public Types
@@ -90,6 +84,8 @@ impl InputFile for NodeTypesFile {
 
     fn from_file<P: AsRef<Path>>(path: P) -> Result<Self, Error> {
         let file_path = path.as_ref().display().to_string();
+        trace!("NodeTypesFile::from_file({file_path})");
+        println!("NodeTypesFile::from_file({file_path})");
         let file = match File::open(path) {
             Ok(file) => file,
             Err(e) => {
@@ -413,17 +409,20 @@ mod tests {
     /*
     use pretty_assertions::assert_eq;
      */
-    use crate::reader::{NodeTypesFile, InputFile};
+    use crate::reader::{InputFile, NodeTypesFile};
 
     #[test]
     fn test_load_example_file() {
-        let result = NodeTypesFile::from_file(format!("./test/{}", NodeTypesFile::DEFAULT_FILE_NAME));
+        let result =
+            NodeTypesFile::from_file(format!("./tests/{}", NodeTypesFile::DEFAULT_FILE_NAME));
         assert!(result.is_ok());
     }
 
     #[test]
     fn test_loaded_node_names() {
-        let file = NodeTypesFile::from_file(format!("./test/{}", NodeTypesFile::DEFAULT_FILE_NAME)).unwrap();
+        let file =
+            NodeTypesFile::from_file(format!("./tests/{}", NodeTypesFile::DEFAULT_FILE_NAME))
+                .unwrap();
         println!("All: {:#?}", file.node_type_names());
         println!("Super-Types: {:#?}", file.super_type_node_type_names());
         println!("Regular: {:#?}", file.regular_node_type_names());
@@ -432,7 +431,9 @@ mod tests {
 
     #[test]
     fn test_loaded_field_names() {
-        let file = NodeTypesFile::from_file(format!("./test/{}", NodeTypesFile::DEFAULT_FILE_NAME)).unwrap();
+        let file =
+            NodeTypesFile::from_file(format!("./tests/{}", NodeTypesFile::DEFAULT_FILE_NAME))
+                .unwrap();
         println!("{:#?}", file.field_names());
     }
 }

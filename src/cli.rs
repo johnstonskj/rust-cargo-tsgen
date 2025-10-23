@@ -2,16 +2,21 @@
 Creates command-line configuration and abstracts the execution of commands using the [`Command`] trait.
  */
 
-use crate::{error::Error, writer::{Arguments, ForLanguage, ConstantsFile, Output}, reader::{InputFile, NodeTypesFile}};
+use crate::{
+    error::Error,
+    reader::{InputFile, GrammarFile, NodeTypesFile},
+    writer::{Arguments, ConstantsFile, WrapperFile, ForLanguage, Output},
+};
 use clap::{Args, CommandFactory, Parser, Subcommand};
 use clap_mangen::Man;
 use clap_markdown::{MarkdownOptions, help_markdown_custom};
 use clap_verbosity_flag::Verbosity;
 use human_panic::setup_panic;
 use std::{
-    path::PathBuf, process::ExitCode,
     error::Error as StdError,
     fmt::{Display, Formatter, Result as FmtResult},
+    path::PathBuf,
+    process::ExitCode,
 };
 use tracing::{info, subscriber::SetGlobalDefaultError};
 use tracing_subscriber::filter::{EnvFilter, LevelFilter, ParseError};
@@ -90,10 +95,7 @@ impl Command for Cli {
     fn execute(&self) -> Result<ExitCode, Error> {
         setup_panic!();
 
-        initialize_tracing(
-            self.verbosity.tracing_level_filter(),
-            Some(module_path!()),
-        )?;
+        initialize_tracing(self.verbosity.tracing_level_filter(), Some(module_path!()))?;
 
         self.cmd.execute()
     }
@@ -139,8 +141,23 @@ impl Command for Commands {
 
                 output.write_to_file(arguments, file_name.clone())?;
                 println!("Node constants file written to {file_name:?}");
-            },
-            Self::Wrapper(args) => info!("Will create wrappers {args:?}"),
+            }
+            Self::Wrapper(args) => {
+                let input_file_name = GrammarFile::file_path(args.input_directory.as_ref());
+                info!("Read source from {input_file_name:?}");
+                let input = GrammarFile::from_file(input_file_name)?;
+
+                let for_language = args.for_language.unwrap_or_default();
+                let arguments = Arguments::new(input, for_language, args.output_directory.clone());
+                info!("Created arguments {arguments:#?}");
+
+                let output = WrapperFile;
+                let file_name = output.file_path(for_language, args.output_directory.as_ref());
+                info!("Will write to file {file_name:?}");
+
+                output.write_to_file(arguments, file_name.clone())?;
+                println!("Node wrapper file written to {file_name:?}");
+            }
         }
         Ok(ExitCode::SUCCESS)
     }

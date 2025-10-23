@@ -3,13 +3,13 @@ One-line description.
 
  */
 
-use crate::{reader::InputFile, error::Error};
+use crate::{error::Error, reader::InputFile};
 use std::{
     fmt::{Display, Formatter, Result as FmtResult},
-    str::FromStr,
-    path::{PathBuf, Path},
     fs::File,
     io::{BufWriter, Write, stdout},
+    path::{Path, PathBuf},
+    str::FromStr,
 };
 use tracing::error;
 
@@ -22,13 +22,18 @@ pub trait Output {
     const DEFAULT_DIRECTORY: &str;
     type InputFile: InputFile;
 
-    fn write<W>(&self, arguments: Arguments<Self::InputFile>, w: &mut W) -> Result<(), Error> where W: Write;
+    fn write<W>(&self, arguments: Arguments<Self::InputFile>, w: &mut W) -> Result<(), Error>
+    where
+        W: Write;
 
     fn print(&self, arguments: Arguments<Self::InputFile>) -> Result<(), Error> {
         self.write(arguments, &mut stdout())
     }
 
-    fn write_to_file<P>(&self, arguments: Arguments<Self::InputFile>, path: P) -> Result<(), Error> where P: AsRef<Path> {
+    fn write_to_file<P>(&self, arguments: Arguments<Self::InputFile>, path: P) -> Result<(), Error>
+    where
+        P: AsRef<Path>,
+    {
         let file_path = path.as_ref().display().to_string();
         let file = match File::create(path) {
             Ok(file) => file,
@@ -50,20 +55,19 @@ pub trait Output {
         )
     }
 
-    fn output_directory(&self, for_language: ForLanguage, override_directory: Option<&PathBuf>) -> String {
+    fn output_directory(
+        &self,
+        for_language: ForLanguage,
+        override_directory: Option<&PathBuf>,
+    ) -> String {
         if let Some(override_directory) = override_directory {
             override_directory.display().to_string()
         } else {
-            format!(
-                "{}/{}",
-                Self::DEFAULT_DIRECTORY,
-                for_language.output_dir(),
-            )
+            format!("{}/{}", Self::DEFAULT_DIRECTORY, for_language.output_dir(),)
         }
     }
 
-    fn file_path(&self, for_language: ForLanguage, override_directory: Option<&PathBuf>) -> String
-    {
+    fn file_path(&self, for_language: ForLanguage, override_directory: Option<&PathBuf>) -> String {
         format!(
             "{}/{}",
             self.output_directory(for_language, override_directory),
@@ -90,8 +94,11 @@ pub enum ForLanguage {
 // ------------------------------------------------------------------------------------------------
 
 impl<F: InputFile> Arguments<F> {
-    pub fn new(input_file: F, for_language: ForLanguage, output_directory: Option<PathBuf>) -> Self
-    {
+    pub fn new(
+        input_file: F,
+        for_language: ForLanguage,
+        output_directory: Option<PathBuf>,
+    ) -> Self {
         Self {
             input_file,
             for_language,
@@ -130,7 +137,6 @@ impl FromStr for ForLanguage {
 }
 
 impl ForLanguage {
-
     pub const fn output_dir(&self) -> &'static str {
         match self {
             Self::Rust => "rust",
@@ -150,3 +156,6 @@ impl ForLanguage {
 
 pub mod constants;
 pub use constants::ConstantsFile;
+
+pub mod wrapper;
+pub use wrapper::WrapperFile;
