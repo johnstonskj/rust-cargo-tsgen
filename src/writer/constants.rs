@@ -51,7 +51,7 @@ impl Output for ConstantsFile {
         let rendered = tera
             .render(&format!("constants.{}", arguments.for_language), &context)
             .unwrap();
-        w.write(rendered.as_bytes())?;
+        w.write_all(rendered.as_bytes())?;
 
         Ok(())
     }

@@ -29,7 +29,7 @@ macro_rules! root_node {
             fn node<'t>(&'t self) -> Node<'t> {
                 self.tree.root_node()
             }
-         }
+        }
     };
 }
 
@@ -163,11 +163,12 @@ macro_rules! value_node {
         impl<'t, 's> TypedNode<'t, 's> for $node_name {
             fn from_node(node: Node<'t>, source: &'s [u8]) -> Self
             where
-                Self: Sized {
+                Self: Sized,
+            {
                 Self(
                     node.utf8_text(source)
                         .expect("Could not convert Node content into string value.")
-                        .to_string()
+                        .to_string(),
                 )
             }
         }
@@ -208,7 +209,7 @@ impl<'s> ModuleNode<'s> {
         let node = self.tree.root_node();
         for child in node.named_children(&mut node.walk()) {
             if child.grammar_name() == node_type {
-                return Some(ModuleVersionNode::from_node(child, self.source))
+                return Some(ModuleVersionNode::from_node(child, self.source));
             }
         }
         None

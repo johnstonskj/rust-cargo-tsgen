@@ -4,8 +4,8 @@ Creates command-line configuration and abstracts the execution of commands using
 
 use crate::{
     error::Error,
-    reader::{InputFile, GrammarFile, NodeTypesFile},
-    writer::{Arguments, ConstantsFile, WrapperFile, ForLanguage, Output},
+    reader::{GrammarFile, InputFile, NodeTypesFile},
+    writer::{Arguments, ConstantsFile, ForLanguage, Output, WrapperFile},
 };
 use clap::{Args, CommandFactory, Parser, Subcommand};
 use clap_mangen::Man;

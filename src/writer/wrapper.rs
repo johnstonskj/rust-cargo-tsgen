@@ -54,7 +54,7 @@ impl Output for WrapperFile {
         let rendered = tera
             .render(&format!("wrapper.{}", arguments.for_language), &context)
             .unwrap();
-        w.write(rendered.as_bytes())?;
+        w.write_all(rendered.as_bytes())?;
 
         Ok(())
     }

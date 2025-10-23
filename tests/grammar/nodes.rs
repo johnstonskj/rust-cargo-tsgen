@@ -467,8 +467,6 @@ pub const NODE_TYPE_VALUE_VARIANT: &str = "value_variant";
 /// This constant holds the string name of the grammar node `variable`.
 pub const NODE_TYPE_VARIABLE: &str = "variable";
 
-
-
 // ---------------------------------------------------------------------------
 // Field name constants
 // ---------------------------------------------------------------------------
@@ -616,8 +614,6 @@ pub const FIELD_VERSION_URI: &str = "version_uri";
 
 /// This constant holds the string name of the grammar field `wildcard`.
 pub const FIELD_WILDCARD: &str = "wildcard";
-
-
 
 // ---------------------------------------------------------------------------
 // Terminal Tokens
@@ -821,4 +817,3 @@ pub const OTHER_TOKENS: [&str; 193] = [
     "⊻",
     "△",
 ];
-

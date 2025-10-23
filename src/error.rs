@@ -90,14 +90,15 @@ impl Display for Error {
             f,
             "{}",
             match self {
-                Self::Io { source: _ } => format!("An I/O error occurred in the standard library."),
+                Self::Io { source: _ } =>
+                    "An I/O error occurred in the standard library.".to_string(),
                 Self::Json { source: _ } =>
-                    format!("An error occurred parsing an input file as JSON."),
+                    "An error occurred parsing an input file as JSON.".to_string(),
                 Self::Render { source: _ } =>
-                    format!("An error occurred rendering an output template."),
+                    "An error occurred rendering an output template.".to_string(),
                 #[cfg(feature = "cli")]
                 Self::TracingInitError { source: _ } =>
-                    format!("Error occurred initializing a tracing subscriber."),
+                    "Error occurred initializing a tracing subscriber.".to_string(),
                 Self::MultipleErrors { sources } => {
                     format!(
                         "Multiple errors occurred:\n{}",
