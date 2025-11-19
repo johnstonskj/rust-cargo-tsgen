@@ -42,7 +42,7 @@ clap_mangen = { version = "0.2", optional = true }
 flat_error = "0.1"
 human-panic = "2.0"
 newstr = "0.3"
-pastey = "0.1"
+pastey = "0.2"
 regex = "1.12"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
